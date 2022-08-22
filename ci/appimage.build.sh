@@ -7,10 +7,17 @@ rm -rf  sdk-linux.tar.xz
 
 mkdir -p $BUILD_FOLDER
 
-echo "#!/bin/bash -eux
+echo '#!/bin/bash -eux
+
+export OSSIA_SDK=/opt/ossia-sdk
+export PATH=$OSSIA_SDK/llvm/bin:$PATH
+export LD_LIBRARY_PATH=$OSSIA_SDK/llvm/lib
+
+export CC=$OSSIA_SDK/llvm/bin/clang
+export CXX=$OSSIA_SDK/llvm/bin/clang++
 
 cd /build
-cmake -GNinja /src \
+cmake /src \
   -DOSSIA_SDK=/opt/ossia-sdk \
   -DBUILD_TESTING=1 \
   -DCMAKE_BUILD_TYPE=RelWithDebInfo
@@ -18,7 +25,7 @@ cmake -GNinja /src \
 cmake --build .
 
 ctest --output-on-failure -V
-" > build-script.sh
+' > build-script.sh
 chmod +x build-script.sh
 
 docker pull ossia/score-package-linux
