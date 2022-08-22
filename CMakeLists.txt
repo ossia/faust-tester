@@ -12,18 +12,24 @@ FetchContent_Declare(
     faustlibs
     GIT_REPOSITORY https://github.com/grame-cncm/faustlibraries
     GIT_TAG cf12b8bda9bb5513303a11746e50629a78524cd3 
+    GIT_SHALLOW 1
 )
 FetchContent_Declare(
     testdsps
     GIT_REPOSITORY https://github.com/ossia/score-user-library
     GIT_TAG master 
+    GIT_SHALLOW 1
 )  
 
-FetchContent_MakeAvailable(faustlibs testdsps)
+if(NOT faustlibs_POPULATED)
+  # Fetch the content using previously declared details
+  FetchContent_Populate(faustlibs)
+  FetchContent_Populate(testdsps)
+endif()
+
 set(FAUST_LIBS_ROOT "${faustlibs_SOURCE_DIR}")
 set(FAUST_DSP_ROOT "${testdsps_SOURCE_DIR}/Presets/Faust")
 
-message(FATAL_ERROR "${FAUST_LIBS_ROOT} ${FAUST_DSP_ROOT}")
 set(CMAKE_CXX_STANDARD 20)
 
 if(WIN32)
@@ -55,9 +61,6 @@ target_link_libraries(FaustTesterDouble
   PUBLIC
     Faust
 ) 
-
-add_dependencies(FaustTesterSingle faustlibs testdsps)
-add_dependencies(FaustTesterDouble faustlibs testdsps)
 
 file(GLOB_RECURSE 
   FAUST_DSPS 
