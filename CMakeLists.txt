@@ -3,8 +3,8 @@ project(FaustLLVMTester LANGUAGES CXX)
 include(FetchContent)
 include(CTest)
 
-set(OSSIA_SDK "c:/ossia-sdk")
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}")
+set(CMAKE_PREFIX_PATH "${OSSIA_SDK}/faust")
 
 find_package(Faust REQUIRED)
 
