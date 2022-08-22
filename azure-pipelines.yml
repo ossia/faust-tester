@@ -1,0 +1,61 @@
+trigger:
+  branches:
+    include:
+      - "*"
+  tags:
+    include:
+      - "*"
+    exclude:
+      - "continuous"
+pr:
+  - "*"
+
+variables:
+  isGitTag: $[startsWith(variables['Build.SourceBranch'], 'refs/tags/')]
+  gitTag: $[replace(replace(variables['Build.SourceBranch'], 'refs/tags/', ''), 'refs/heads/', '')]
+  gitTagNoV: $[replace(replace(replace(variables['Build.SourceBranch'], 'refs/tags/v', ''), 'refs/heads', ''), '/', '')]
+  isMaster: $[eq(variables['Build.SourceBranch'], 'refs/heads/master')]
+
+
+stages:
+  - stage: Build
+    jobs:
+      - job: Win32
+        displayName: Win32
+        pool:
+          vmImage: "windows-2019"
+
+        steps:
+          - checkout: self
+            submodules: recursive
+          - bash: |
+              source ci/win32.deps.sh
+          - script: |
+              call ci/win32.build.cmd
+
+      - job: AppImage
+        displayName: AppImage
+        pool:
+          vmImage: "ubuntu-20.04"
+
+        steps:
+          - checkout: self
+            submodules: recursive
+          - bash: |
+              source ci/appimage.deps.sh
+          - bash: |
+              source ci/appimage.build.sh
+
+      - job: macOS
+        displayName: macOS
+        pool:
+          vmImage: "macos-12"
+
+        steps:
+          - checkout: self
+            submodules: recursive
+          - bash: |
+              source ci/osx-package.deps.sh
+          - bash: |
+              source ci/osx-package.build.sh
+              
