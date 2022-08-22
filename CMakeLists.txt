@@ -5,8 +5,9 @@ include(CTest)
 
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}")
 set(CMAKE_PREFIX_PATH "${OSSIA_SDK}/faust")
-
+set(THREADS_PREFER_PTHREAD_FLAG 1)
 find_package(Faust REQUIRED)
+find_package(Threads)
 
 FetchContent_Declare(
     faustlibs
@@ -56,10 +57,12 @@ target_compile_definitions(FaustTesterDouble
 target_link_libraries(FaustTesterSingle
   PUBLIC
     Faust
+    Threads::Threads
 )
 target_link_libraries(FaustTesterDouble
   PUBLIC
     Faust
+    Threads::Threads
 ) 
 
 file(GLOB_RECURSE 
