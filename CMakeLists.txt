@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 project(FaustLLVMTester LANGUAGES CXX)
-include(ExternalProject)
+include(FetchContent)
 include(CTest)
 
 set(OSSIA_SDK "c:/ossia-sdk")
@@ -8,27 +8,22 @@ set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}")
 
 find_package(Faust REQUIRED)
 
-ExternalProject_Add(
+FetchContent_Declare(
     faustlibs
-    PREFIX ""
     GIT_REPOSITORY https://github.com/grame-cncm/faustlibraries
     GIT_TAG cf12b8bda9bb5513303a11746e50629a78524cd3 
-    CONFIGURE_COMMAND ""
-    BUILD_COMMAND ""
-    INSTALL_COMMAND ""
 )
-ExternalProject_Add(
+FetchContent_Declare(
     testdsps
-    PREFIX ""
     GIT_REPOSITORY https://github.com/ossia/score-user-library
     GIT_TAG master 
-    CONFIGURE_COMMAND ""
-    BUILD_COMMAND ""
-    INSTALL_COMMAND ""
-)
-set(FAUST_LIBS_ROOT "${CMAKE_CURRENT_BINARY_DIR}/faustlibs-prefix/src/faustlibs")
-set(FAUST_DSP_ROOT "${CMAKE_CURRENT_BINARY_DIR}/testdsps-prefix/src/testdsps/Presets/Faust")
+)  
 
+FetchContent_MakeAvailable(faustlibs testdsps)
+set(FAUST_LIBS_ROOT "${faustlibs_SOURCE_DIR}")
+set(FAUST_DSP_ROOT "${testdsps_SOURCE_DIR}/Presets/Faust")
+
+message(FATAL_ERROR "${FAUST_LIBS_ROOT} ${FAUST_DSP_ROOT}")
 set(CMAKE_CXX_STANDARD 20)
 
 if(WIN32)

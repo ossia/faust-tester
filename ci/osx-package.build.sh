@@ -8,6 +8,7 @@ cd build
 
 xcrun cmake -GNinja .. \
   -DOSSIA_SDK=$OSSIA_SDK \
+  -DBUILD_TESTING=1 \
   -DCMAKE_BUILD_TYPE=RelWithDebInfo
 
 cmake --build .

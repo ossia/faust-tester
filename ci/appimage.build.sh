@@ -13,6 +13,7 @@ echo "#!/bin/bash -eux
 cd /build
 cmake -GNinja /src \
   -DOSSIA_SDK=/opt/ossia-sdk \
+  -DBUILD_TESTING=1 \
   -DCMAKE_BUILD_TYPE=RelWithDebInfo
 
 cmake --build .
@@ -23,10 +24,10 @@ chmod +x build-script.sh
 
 docker pull ossia/score-package-linux
 docker run \
-           -v "build-script.sh:/Recipe" \
+           -v "build-script.sh:/build-script.sh" \
            --mount type=bind,source="$PWD/opt/ossia-sdk",target=/opt/ossia-sdk \
            --mount type=bind,source="$SOURCE_FOLDER",target=/src \
            --mount type=bind,source="$BUILD_FOLDER",target=/build \
            ossia/score-package-linux \
-           /bin/bash /Recipe
+           /bin/bash /build-script.sh
 
