@@ -6,7 +6,6 @@ tar xaf sdk-linux.tar.xz
 rm -rf  sdk-linux.tar.xz
 
 mkdir -p $BUILD_FOLDER
-ln -s $BUILD_FOLDER build
 
 echo "#!/bin/bash -eux
 
@@ -29,5 +28,5 @@ docker run \
            --mount type=bind,source="$SOURCE_FOLDER",target=/src \
            --mount type=bind,source="$BUILD_FOLDER",target=/build \
            ossia/score-package-linux \
-           /bin/bash /build-script.sh
+           /bin/bash /src/build-script.sh
 

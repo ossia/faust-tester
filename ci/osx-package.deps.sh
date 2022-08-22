@@ -13,7 +13,4 @@ sudo chmod -R a+rwx /opt
 gtar xhaf $SDK_ARCHIVE --strip-components=2 --directory /opt/ossia-sdk-x86_64/
 ls /opt/ossia-sdk-x86_64/
 
-sudo rm -rf /Library/Developer/CommandLineTools
-sudo rm -rf /usr/local/include/c++
-
 set -e
