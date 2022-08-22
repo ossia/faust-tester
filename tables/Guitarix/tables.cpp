@@ -8,7 +8,7 @@
 #define GUITARIX_EXPORT extern "C" __attribute__((visibility("default"))) __declspec(dllexport)
 #define always_inline
 #else
-#define GUITARIX_EXPORT  extern "C"  __attribute__((visibility("default"))) __declspec(dllexport)
+#define GUITARIX_EXPORT  extern "C"  __attribute__((visibility("default")))
 #define always_inline  __attribute__((always_inline))
 #endif
 
