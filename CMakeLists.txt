@@ -39,6 +39,10 @@ if(WIN32)
   else()
     add_compile_options(-fms-extensions)
   endif()
+elseif(APPLE)
+else()
+  # Link option required for exporting symbols on Linux. Unneeded on Mac & Win32
+  add_link_options(-Wl,--export-dynamic)
 endif()
 
 add_executable(FaustTesterSingle FaustTester.cpp tables/STK/tables.cpp tables/Guitarix/tables.cpp)
